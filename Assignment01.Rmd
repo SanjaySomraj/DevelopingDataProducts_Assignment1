@@ -1,0 +1,47 @@
+---
+title: "Developing Data Products - Assignment 1 (Week 2)"
+author: "Sanjay Somraj"
+date: "Created Date: 12 June, 2017"
+output:
+  html_document:
+    fig_height: 8
+    fig_width: 8
+    keep_md: yes
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Most visited tourist spots of India
+
+This map provides details of some of the most visited tourist places of India. India has innumerable holy temples and world heritage sites that attract millions of tourists from all over the globe. I have listed only 40 such sites.
+
+The user may click on any of highlighted locations on the map to view the name of the place. Clicking on the name of the location in the popup will open the relevant website of place/temple.
+
+```{r echo=FALSE}
+library(leaflet)
+
+mapData <- read.csv("./data/siteList.csv", stringsAsFactors = FALSE)
+location <- data.frame(lat=mapData$Lat, lng=mapData$Lng)
+names <- c()
+for(i in 1:nrow(mapData)) {
+     url <- paste("<a href='",mapData$URL[i],"'>",mapData$Name[i],"</a>")
+     names<- c(names, url)
+}
+
+locationIcon = makeIcon(iconUrl = "./images/location.png",
+                iconWidth = 30*210/230,
+                iconHeight = 30,
+                iconAnchorX = 30*210/230/2,
+                iconAnchorY = 12)
+
+my_map<-leaflet(location) %>% addTiles() %>% addMarkers(icon = locationIcon, popup = names)
+my_map
+```
+&nbsp;
+&nbsp;
+&nbsp;
+
+Thank you.
